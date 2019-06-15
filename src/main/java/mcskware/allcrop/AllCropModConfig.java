@@ -8,13 +8,17 @@ public class AllCropModConfig {
     public static final ForgeConfigSpec spec = BUILDER.build();
 
     public static class General {
-        public final ForgeConfigSpec.ConfigValue<Integer> CropSpreadFactor;
+        public final ForgeConfigSpec.ConfigValue<Integer> CropSpreadChance;
+        public final ForgeConfigSpec.ConfigValue<Integer> CropMutateChance;
 
         public General(ForgeConfigSpec.Builder builder) {
             builder.push("General");
-            CropSpreadFactor = builder
-                    .comment("Crops have a 1 in X chance of spreading when a mature crop is bone mealed [1..10|default:5]")
-                    .defineInRange("cropSpreadFactor", 5, 1, 10);
+            CropSpreadChance = builder
+                    .comment(" Crops have a X% chance of spreading when a mature crop is bone mealed [0..100|default:20]")
+                    .defineInRange("cropSpreadChance", 20, 0, 100);
+            CropMutateChance = builder
+                    .comment(" Crops have a X% chance of mutating when a crop spreads [0..100|default:20]")
+                    .defineInRange("cropMutateChance", 20, 0, 100);
             builder.pop();
         }
     }

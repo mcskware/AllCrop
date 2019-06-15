@@ -27,7 +27,8 @@ public class AllCropMod {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static int cropSpreadFactor;
+    private static int cropSpreadChance;
+    private static int cropMutateChance;
 
     public AllCropMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -52,8 +53,10 @@ public class AllCropMod {
     private static void LoadConfig()
     {
         LOGGER.info("In LoadConfig");
-        cropSpreadFactor = AllCropModConfig.GENERAL.CropSpreadFactor.get();
-        LOGGER.info("Setting crop spread factor to {}", cropSpreadFactor);
+        cropSpreadChance = AllCropModConfig.GENERAL.CropSpreadChance.get();
+        LOGGER.info("Setting crop spread chance to {}%", cropSpreadChance);
+        cropMutateChance= AllCropModConfig.GENERAL.CropMutateChance.get();
+        LOGGER.info("Setting crop mutate chance to {}%", cropMutateChance);
     }
 
     @SubscribeEvent
@@ -74,7 +77,7 @@ public class AllCropMod {
 
         event.setResult(Event.Result.ALLOW);
 
-        if (world.getRandom().nextInt(cropSpreadFactor) != 0) { return; }
+        if (world.getRandom().nextInt(100) >= cropSpreadChance) { return; }
 
         List<BlockPos> blocks = Lists.newArrayList(BlockPos.getAllInBox(pos.add(-1, -1, -1), pos.add(1, -1, 1)));
         Collections.shuffle(blocks);
