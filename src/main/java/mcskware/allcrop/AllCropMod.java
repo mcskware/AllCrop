@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -32,6 +31,8 @@ public class AllCropMod {
 
     @SubscribeEvent
     public void onBoneMeal(BonemealEvent event) {
+        if (event.getWorld().isRemote) { return; }
+
         event.setResult(Event.Result.DEFAULT);
 
         BlockPos pos = event.getPos();
@@ -45,9 +46,6 @@ public class AllCropMod {
         if (!crops.isMaxAge(state)) { return; }
 
         event.setResult(Event.Result.ALLOW);
-
-        ItemStack stack = event.getStack();
-        stack.setCount(stack.getCount() - 1);
 
         if (world.getRandom().nextInt(cropSpreadFactor) != 0) { return; }
 
