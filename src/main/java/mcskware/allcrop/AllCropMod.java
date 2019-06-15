@@ -11,7 +11,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,10 +27,33 @@ public class AllCropMod {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static int cropSpreadFactor = 1;
+    private static int cropSpreadFactor;
 
     public AllCropMod() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
+        ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, AllCropModConfig.spec);
+    }
+
+    private void setup(final FMLCommonSetupEvent event) {
+        LOGGER.info("Ping from allcropmod setup");
+        LoadConfig();
+    }
+
+    @SubscribeEvent
+    public static void onModConfig(ModConfig.ModConfigEvent event) {
+        LOGGER.info("In mod config event");
+        final ModConfig config = event.getConfig();
+        if (config.getSpec() == AllCropModConfig.spec) {
+            LoadConfig();
+        }
+    }
+
+    private static void LoadConfig()
+    {
+        LOGGER.info("In LoadConfig");
+        cropSpreadFactor = AllCropModConfig.GENERAL.CropSpreadFactor.get();
+        LOGGER.info("Setting crop spread factor to {}", cropSpreadFactor);
     }
 
     @SubscribeEvent
@@ -51,21 +78,16 @@ public class AllCropMod {
 
         List<BlockPos> blocks = Lists.newArrayList(BlockPos.getAllInBox(pos.add(-1, -1, -1), pos.add(1, -1, 1)));
         Collections.shuffle(blocks);
-        LOGGER.info("Will spread...");
 
         for (BlockPos testPos : blocks) {
             IBlockState testState = world.getBlockState(testPos);
             boolean isFertile = testState.isFertile(world, testPos);
-            LOGGER.info("isFertile {}", isFertile);
             boolean canSustainPlant = testState.canSustainPlant(world, testPos, EnumFacing.UP, (net.minecraftforge.common.IPlantable)block);
-            LOGGER.info("canSustainPlant {}", canSustainPlant);
             BlockPos plantPos = testPos.up();
             boolean isAirBlock = world.isAirBlock(plantPos);
-            LOGGER.info("isAirBlock {}", isAirBlock);
 
             if (isAirBlock && isFertile && canSustainPlant) {
                 world.setBlockState(testPos.add(0, 1, 0), block.getDefaultState(), 3);
-                LOGGER.info("Spreading to {}", testPos);
                 break;
             }
         }
