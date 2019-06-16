@@ -86,7 +86,6 @@ public class CropSpreading {
             Set<MutationRecipe> possibleMutants = AllCropRecipes.getMatchingRecipes(mutationParents, world.getBlockState(testPos.down()));
             possibleMutants.removeIf(mutationRecipe -> !mutationRecipe.hasParent(world.getBlockState(pos).getBlock()));
 
-            LOGGER.debug("There are {} possible mutants", possibleMutants.size());
             if (possibleMutants.isEmpty()) { continue; }
 
             MutationRecipe mutant = chooseMutation(possibleMutants, mutationParents);
