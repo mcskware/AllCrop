@@ -1,6 +1,8 @@
 package mcskware.allcrop.spreading;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
 import mcskware.allcrop.AllCropMod;
 import mcskware.allcrop.AllCropModConfig;
 import mcskware.allcrop.recipes.AllCropRecipes;
@@ -93,8 +95,8 @@ public class CropSpreading {
             LOGGER.debug("There are {} possible mutants", possibleMutants.size());
             if (possibleMutants.isEmpty()) { continue; }
 
-            //TODO: we need to choose a mutation in a smarter way than just the first in the list
-            MutationRecipe mutant = possibleMutants.iterator().next();
+            MutationRecipe mutant = chooseMutation(possibleMutants, mutationParents);
+            if (mutant == null) { continue; }
             Block child = mutant.getChild();
             if (!world.getBlockState(testPos.down()).canSustainPlant(world, testPos.down(), EnumFacing.UP, (IPlantable)child)) { continue; }
 
@@ -137,5 +139,19 @@ public class CropSpreading {
         LOGGER.debug("Will not spread");
 
         return false;
+    }
+
+    private static MutationRecipe chooseMutation(Set<MutationRecipe> possibleMutants, List<Block> mutationParents) {
+        List<MutationRecipe> options = Lists.newArrayList();
+        for (MutationRecipe mutation : possibleMutants) {
+            int parentMatchCount = mutation.getParentMatchCount(mutationParents);
+            for (int i = 0; i < parentMatchCount; i++) {
+                options.add(mutation);
+            }
+        }
+        if (options.isEmpty()) { return null; }
+
+        Collections.shuffle(options);
+        return options.get(0);
     }
 }

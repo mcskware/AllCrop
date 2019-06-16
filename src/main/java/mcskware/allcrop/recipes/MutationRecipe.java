@@ -28,14 +28,19 @@ public class MutationRecipe {
         int matchCount = 0;
         Multiset<Block> workingSet = HashMultiset.create();
         workingSet.addAll(testParents);
-        while (testParents.containsAll(parents)) {
+        while (workingSet.containsAll(parents)) {
             matchCount++;
-            parents.forEach(testParents::remove);
+            parents.forEach(workingSet::remove);
         }
         return matchCount;
     }
 
     public Block getChild() {
         return child;
+    }
+
+    @Override
+    public String toString() {
+        return child.getRegistryName().toString();
     }
 }

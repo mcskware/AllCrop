@@ -11,6 +11,7 @@ import java.util.Set;
 public class AllCropRecipes {
     private static Set<MutationRecipe> mutationRecipes = Sets.newHashSet();
     public static void loadDefaultRecipes() {
+        mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.GRASS), Blocks.FARMLAND, Blocks.POTATOES));
         mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.GRASS), Blocks.FARMLAND, Blocks.CARROTS));
     }
 
