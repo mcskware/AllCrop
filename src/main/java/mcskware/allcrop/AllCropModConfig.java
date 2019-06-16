@@ -2,16 +2,16 @@ package mcskware.allcrop;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class AllCropModConfig {
+class AllCropModConfig {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final General GENERAL = new General(BUILDER);
-    public static final ForgeConfigSpec spec = BUILDER.build();
+    static final General GENERAL = new General(BUILDER);
+    static final ForgeConfigSpec spec = BUILDER.build();
 
     public static class General {
-        public final ForgeConfigSpec.ConfigValue<Integer> CropSpreadChance;
-        public final ForgeConfigSpec.ConfigValue<Integer> CropMutateChance;
+        final ForgeConfigSpec.ConfigValue<Integer> CropSpreadChance;
+        final ForgeConfigSpec.ConfigValue<Integer> CropMutateChance;
 
-        public General(ForgeConfigSpec.Builder builder) {
+        General(ForgeConfigSpec.Builder builder) {
             builder.push("General");
             CropSpreadChance = builder
                     .comment(" Crops have a X% chance of spreading when a mature crop is bone mealed [0..100|default:20]")
