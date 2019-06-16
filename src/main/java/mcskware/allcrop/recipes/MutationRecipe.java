@@ -3,6 +3,7 @@ package mcskware.allcrop.recipes;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.HashMultiset;
 import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.Collection;
 
@@ -41,6 +42,10 @@ public class MutationRecipe {
 
     @Override
     public String toString() {
-        return child.getRegistryName().toString();
+        ResourceLocation loc = child.getRegistryName();
+        if (loc != null) {
+            return child.getRegistryName().toString();
+        }
+        return "Unknown mutation";
     }
 }
