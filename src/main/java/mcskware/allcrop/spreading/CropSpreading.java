@@ -59,7 +59,7 @@ public class CropSpreading {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        List<BlockPos> blocks = Lists.newArrayList(BlockPos.getAllInBoxMutable(pos.add(-1, -1, -1), pos.add(1, -1, 1)));
+        List<BlockPos> blocks = getNeighborPositions(pos.down());
         Collections.shuffle(blocks);
 
         for (BlockPos testPos : blocks) {
@@ -70,7 +70,7 @@ public class CropSpreading {
             boolean isAirBlock = world.isAirBlock(plantPos);
 
             if (isAirBlock && isFertile && canSustainPlant) {
-                world.setBlockState(testPos.up(), block.getDefaultState(), 3);
+                world.setBlockState(plantPos, block.getDefaultState(), 3);
                 break;
             }
         }
@@ -80,7 +80,7 @@ public class CropSpreading {
         BlockPos pos = event.getPos();
         IWorld world = event.getWorld();
 
-        List<BlockPos> blocks = Lists.newArrayList(BlockPos.getAllInBoxMutable(pos.add(-1, 0, -1), pos.add(1, 0, 1)));
+        List<BlockPos> blocks = getNeighborPositions(pos);
         Collections.shuffle(blocks);
 
         boolean mutated = false;
@@ -108,15 +108,23 @@ public class CropSpreading {
 
     private static List<Block> getMutationParents(IWorld world, BlockPos pos) {
         List<Block> parents = Lists.newArrayList();
-        parents.add(world.getBlockState(pos.north().west()).getBlock());
-        parents.add(world.getBlockState(pos.north()).getBlock());
-        parents.add(world.getBlockState(pos.north().east()).getBlock());
-        parents.add(world.getBlockState(pos.west()).getBlock());
-        parents.add(world.getBlockState(pos.east()).getBlock());
-        parents.add(world.getBlockState(pos.south().west()).getBlock());
-        parents.add(world.getBlockState(pos.south()).getBlock());
-        parents.add(world.getBlockState(pos.south().east()).getBlock());
+        for (BlockPos npos : getNeighborPositions(pos)) {
+            parents.add(world.getBlockState(npos).getBlock());
+        }
         return parents;
+    }
+
+    private static List<BlockPos> getNeighborPositions(BlockPos pos) {
+        List<BlockPos> neighbors = Lists.newArrayList();
+        neighbors.add(pos.north().west());
+        neighbors.add(pos.north());
+        neighbors.add(pos.north().east());
+        neighbors.add(pos.west());
+        neighbors.add(pos.east());
+        neighbors.add(pos.south().west());
+        neighbors.add(pos.south());
+        neighbors.add(pos.south().east());
+        return neighbors;
     }
 
     private static boolean canSpread(BlockState state, IWorld world, BlockPos pos) {
