@@ -3,23 +3,25 @@ package mcskware.allcrop.recipes;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.HashMultiset;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Collection;
+import java.util.function.Predicate;
 
 public class MutationRecipe {
     private Multiset<Block> parents = HashMultiset.create();
-    private Block targetSoil;
+    private Predicate<BlockState> targetSoilPredicate;
     private Block child;
 
-    MutationRecipe(Collection<Block> parents, Block targetSoil, Block child) {
+    MutationRecipe(Collection<Block> parents, Predicate<BlockState> targetSoilPredicate, Block child) {
         this.parents.addAll(parents);
-        this.targetSoil = targetSoil;
+        this.targetSoilPredicate = targetSoilPredicate;
         this.child = child;
     }
 
-    boolean parentalRequirementsMet(Collection<Block> testParents, Block testSoil) {
-        boolean soilMatch = testSoil == targetSoil;
+    boolean parentalRequirementsMet(Collection<Block> testParents, BlockState testSoil) {
+        boolean soilMatch = targetSoilPredicate.test(testSoil);
         boolean parentsMatch = testParents.containsAll(parents);
         return soilMatch && parentsMatch;
     }

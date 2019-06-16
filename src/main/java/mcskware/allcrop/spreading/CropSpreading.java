@@ -5,10 +5,7 @@ import mcskware.allcrop.AllCropMod;
 import mcskware.allcrop.AllCropModConfig;
 import mcskware.allcrop.recipes.AllCropRecipes;
 import mcskware.allcrop.recipes.MutationRecipe;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CropsBlock;
-import net.minecraft.block.SaplingBlock;
+import net.minecraft.block.*;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -89,7 +86,7 @@ public class CropSpreading {
             if (!world.isAirBlock(testPos)) { continue; }
 
             List<Block> mutationParents = getMutationParents(world, testPos);
-            Set<MutationRecipe> possibleMutants = AllCropRecipes.getMatchingRecipes(mutationParents, world.getBlockState(testPos.down()).getBlock());
+            Set<MutationRecipe> possibleMutants = AllCropRecipes.getMatchingRecipes(mutationParents, world.getBlockState(testPos.down()));
             LOGGER.debug("There are {} possible mutants", possibleMutants.size());
             if (possibleMutants.isEmpty()) { continue; }
 
@@ -140,6 +137,10 @@ public class CropSpreading {
             if (sapling.canGrow(world, pos, state, false)) {
                 return true;
             }
+        }
+
+        if (state.getBlock() instanceof SandBlock) {
+            return true;
         }
 
         LOGGER.debug("Will not spread");
