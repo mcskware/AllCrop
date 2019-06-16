@@ -9,12 +9,12 @@ import java.util.Collection;
 import java.util.Set;
 
 public class AllCropRecipes {
-    private Set<MutationRecipe> mutationRecipes = Sets.newHashSet();
-    public void loadDefaultRecipes() {
+    private static Set<MutationRecipe> mutationRecipes = Sets.newHashSet();
+    public static void loadDefaultRecipes() {
         mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.GRASS), Blocks.FARMLAND, Blocks.CARROTS));
     }
 
-    public Set<MutationRecipe> getMatchingRecipes(Collection<Block> testParents, Block testSoil) {
+    public static Set<MutationRecipe> getMatchingRecipes(Collection<Block> testParents, Block testSoil) {
         Set<MutationRecipe> matches = Sets.newHashSet();
         mutationRecipes.forEach(recipe -> {
             if (recipe.parentalRequirementsMet(testParents, testSoil)) {

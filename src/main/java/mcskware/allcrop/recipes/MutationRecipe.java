@@ -23,6 +23,7 @@ public class MutationRecipe {
         return soilMatch && parentsMatch;
     }
 
+    @SuppressWarnings("unused")
     public int getParentMatchCount(Collection<Block> testParents) {
         int matchCount = 0;
         Multiset<Block> workingSet = HashMultiset.create();
