@@ -9,10 +9,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod("allcropmod")
+@Mod(AllCropMod.MODID)
 public class AllCropMod {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+    public static final String MODID = "allcropmod";
 
     public AllCropMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
