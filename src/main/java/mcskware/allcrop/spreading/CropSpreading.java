@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-@EventBusSubscriber(modid = AllCropMod.MODID, bus = EventBusSubscriber.Bus.FORGE)
 @SuppressWarnings("unused")
 public class CropSpreading {
     private static final Logger LOGGER = LogManager.getLogger();
