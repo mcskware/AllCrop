@@ -42,6 +42,10 @@ public class MutationRecipe {
         return child;
     }
 
+    public boolean hasParent(Block parent) {
+        return parents.contains(parent);
+    }
+
     @Override
     public String toString() {
         ResourceLocation loc = child.getRegistryName();

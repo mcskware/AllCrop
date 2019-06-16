@@ -87,6 +87,8 @@ public class CropSpreading {
 
             List<Block> mutationParents = getMutationParents(world, testPos);
             Set<MutationRecipe> possibleMutants = AllCropRecipes.getMatchingRecipes(mutationParents, world.getBlockState(testPos.down()));
+            possibleMutants.removeIf(mutationRecipe -> !mutationRecipe.hasParent(world.getBlockState(pos).getBlock()));
+
             LOGGER.debug("There are {} possible mutants", possibleMutants.size());
             if (possibleMutants.isEmpty()) { continue; }
 
@@ -106,6 +108,12 @@ public class CropSpreading {
     private static List<Block> getMutationParents(IWorld world, BlockPos pos) {
         List<Block> parents = Lists.newArrayList();
         for (BlockPos npos : getNeighborPositions(pos)) {
+            BlockState state = world.getBlockState(npos);
+            Block block = state.getBlock();
+            if (block instanceof CropsBlock) {
+                CropsBlock crops = (CropsBlock)block;
+                if (!crops.isMaxAge(state)) { continue; }
+            }
             parents.add(world.getBlockState(npos).getBlock());
         }
         return parents;

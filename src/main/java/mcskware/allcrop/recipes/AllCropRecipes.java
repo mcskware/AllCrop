@@ -15,6 +15,7 @@ public class AllCropRecipes {
         mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.GRASS), blockState -> blockState.getBlock() == Blocks.FARMLAND, Blocks.POTATOES));
         mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.GRASS), blockState -> blockState.getBlock() == Blocks.FARMLAND, Blocks.CARROTS));
         mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.POTATOES), blockState -> blockState.getBlock() == Blocks.SAND, Blocks.SUGAR_CANE));
+        mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.CARROTS), blockState -> blockState.getBlock() == Blocks.SAND, Blocks.CACTUS));
     }
 
     public static Set<MutationRecipe> getMatchingRecipes(Collection<Block> testParents, BlockState testSoil) {
