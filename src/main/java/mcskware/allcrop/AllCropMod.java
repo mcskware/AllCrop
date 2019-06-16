@@ -14,20 +14,17 @@ import org.apache.logging.log4j.Logger;
 public class AllCropMod {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final String MODID = "allcropmod";
-
-    // event handling classes
-    CropSpreading cropSpreading = new CropSpreading();
+    static final String MODID = "allcropmod";
 
     public AllCropMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(cropSpreading);
+        MinecraftForge.EVENT_BUS.register(new CropSpreading());
         ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, AllCropModConfig.spec);
     }
 
     private void setup(@SuppressWarnings("unused") final FMLCommonSetupEvent event) {
-        LOGGER.info("Ping from allcropmod setup");
+        LOGGER.debug("Ping from allcropmod setup");
         loadRecipes();
     }
 

@@ -1,7 +1,6 @@
 package mcskware.allcrop.spreading;
 
 import com.google.common.collect.Lists;
-import mcskware.allcrop.AllCropMod;
 import mcskware.allcrop.AllCropModConfig;
 import mcskware.allcrop.recipes.AllCropRecipes;
 import mcskware.allcrop.recipes.MutationRecipe;
@@ -13,7 +12,6 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
