@@ -3,7 +3,7 @@ package mcskware.allcrop.recipes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 
 import java.util.Collection;
 import java.util.Set;

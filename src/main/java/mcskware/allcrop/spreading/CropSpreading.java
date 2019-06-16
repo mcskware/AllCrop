@@ -1,17 +1,15 @@
 package mcskware.allcrop.spreading;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Multisets;
 import mcskware.allcrop.AllCropMod;
 import mcskware.allcrop.AllCropModConfig;
 import mcskware.allcrop.recipes.AllCropRecipes;
 import mcskware.allcrop.recipes.MutationRecipe;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CropsBlock;
+import net.minecraft.block.SaplingBlock;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraftforge.common.IPlantable;
@@ -40,7 +38,7 @@ public class CropSpreading {
 
         BlockPos pos = event.getPos();
         IWorld world = event.getWorld();
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
 
         if (!canSpread(state, world, pos)) { return; }
 
@@ -58,16 +56,16 @@ public class CropSpreading {
     private static void boneMealSpread(BonemealEvent event) {
         BlockPos pos = event.getPos();
         IWorld world = event.getWorld();
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
 
-        List<BlockPos> blocks = Lists.newArrayList(BlockPos.getAllInBox(pos.add(-1, -1, -1), pos.add(1, -1, 1)));
+        List<BlockPos> blocks = Lists.newArrayList(BlockPos.getAllInBoxMutable(pos.add(-1, -1, -1), pos.add(1, -1, 1)));
         Collections.shuffle(blocks);
 
         for (BlockPos testPos : blocks) {
-            IBlockState testState = world.getBlockState(testPos);
+            BlockState testState = world.getBlockState(testPos);
             boolean isFertile = testState.isFertile(world, testPos);
-            boolean canSustainPlant = testState.canSustainPlant(world, testPos, EnumFacing.UP, (IPlantable)block);
+            boolean canSustainPlant = testState.canSustainPlant(world, testPos, Direction.UP, (IPlantable)block);
             BlockPos plantPos = testPos.up();
             boolean isAirBlock = world.isAirBlock(plantPos);
 
@@ -82,7 +80,7 @@ public class CropSpreading {
         BlockPos pos = event.getPos();
         IWorld world = event.getWorld();
 
-        List<BlockPos> blocks = Lists.newArrayList(BlockPos.getAllInBox(pos.add(-1, 0, -1), pos.add(1, 0, 1)));
+        List<BlockPos> blocks = Lists.newArrayList(BlockPos.getAllInBoxMutable(pos.add(-1, 0, -1), pos.add(1, 0, 1)));
         Collections.shuffle(blocks);
 
         boolean mutated = false;
@@ -98,7 +96,7 @@ public class CropSpreading {
             MutationRecipe mutant = chooseMutation(possibleMutants, mutationParents);
             if (mutant == null) { continue; }
             Block child = mutant.getChild();
-            if (!world.getBlockState(testPos.down()).canSustainPlant(world, testPos.down(), EnumFacing.UP, (IPlantable)child)) { continue; }
+            if (!world.getBlockState(testPos.down()).canSustainPlant(world, testPos.down(), Direction.UP, (IPlantable)child)) { continue; }
 
             world.setBlockState(testPos, child.getDefaultState(), 3);
             mutated = true;
@@ -121,16 +119,16 @@ public class CropSpreading {
         return parents;
     }
 
-    private static boolean canSpread(IBlockState state, IWorld world, BlockPos pos) {
-        if (state.getBlock() instanceof BlockCrops) {
-            BlockCrops crops = (BlockCrops) state.getBlock();
+    private static boolean canSpread(BlockState state, IWorld world, BlockPos pos) {
+        if (state.getBlock() instanceof CropsBlock) {
+            CropsBlock crops = (CropsBlock) state.getBlock();
             if (crops.isMaxAge(state)) {
                 return true;
             }
         }
 
-        if (state.getBlock() instanceof BlockSapling) {
-            BlockSapling sapling = (BlockSapling) state.getBlock();
+        if (state.getBlock() instanceof SaplingBlock) {
+            SaplingBlock sapling = (SaplingBlock) state.getBlock();
             if (sapling.canGrow(world, pos, state, false)) {
                 return true;
             }
