@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import java.util.function.Predicate;
 
 class PlacementPredicates {
+    @SuppressWarnings("RedundantIfStatement")
     static Predicate<BlockState> isFertileSoil() {
         return ((state) -> {
             Block block = state.getBlock();
@@ -17,6 +18,7 @@ class PlacementPredicates {
         });
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     static Predicate<BlockState> isSandyBlock() {
         return ((state) -> {
             Block block = state.getBlock();
