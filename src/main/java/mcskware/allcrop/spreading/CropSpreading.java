@@ -28,7 +28,7 @@ public class CropSpreading {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public static void onBoneMeal(BonemealEvent event) {
+    public void onBoneMeal(BonemealEvent event) {
         if (event.getWorld().isRemote) { return; }
 
         event.setResult(Event.Result.DEFAULT);
@@ -50,7 +50,7 @@ public class CropSpreading {
         }
     }
 
-    private static void boneMealSpread(BonemealEvent event) {
+    private void boneMealSpread(BonemealEvent event) {
         BlockPos pos = event.getPos();
         IWorld world = event.getWorld();
         BlockState state = world.getBlockState(pos);
@@ -73,7 +73,7 @@ public class CropSpreading {
         }
     }
 
-    private static void boneMealMutate(BonemealEvent event) {
+    private void boneMealMutate(BonemealEvent event) {
         BlockPos pos = event.getPos();
         IWorld world = event.getWorld();
 
@@ -105,7 +105,7 @@ public class CropSpreading {
         if (!mutated) { boneMealSpread(event); }
     }
 
-    private static List<Block> getMutationParents(IWorld world, BlockPos pos) {
+    private List<Block> getMutationParents(IWorld world, BlockPos pos) {
         List<Block> parents = Lists.newArrayList();
         for (BlockPos npos : getNeighborPositions(pos)) {
             BlockState state = world.getBlockState(npos);
@@ -119,7 +119,7 @@ public class CropSpreading {
         return parents;
     }
 
-    private static List<BlockPos> getNeighborPositions(BlockPos pos) {
+    private List<BlockPos> getNeighborPositions(BlockPos pos) {
         List<BlockPos> neighbors = Lists.newArrayList();
         neighbors.add(pos.north().west());
         neighbors.add(pos.north());
@@ -132,7 +132,7 @@ public class CropSpreading {
         return neighbors;
     }
 
-    private static boolean canSpread(BlockState state, IWorld world, BlockPos pos) {
+    private boolean canSpread(BlockState state, IWorld world, BlockPos pos) {
         if (state.getBlock() instanceof CropsBlock) {
             CropsBlock crops = (CropsBlock) state.getBlock();
             if (crops.isMaxAge(state)) {
@@ -156,7 +156,7 @@ public class CropSpreading {
         return false;
     }
 
-    private static MutationRecipe chooseMutation(Set<MutationRecipe> possibleMutants, List<Block> mutationParents) {
+    private MutationRecipe chooseMutation(Set<MutationRecipe> possibleMutants, List<Block> mutationParents) {
         List<MutationRecipe> options = Lists.newArrayList();
         for (MutationRecipe mutation : possibleMutants) {
             int parentMatchCount = mutation.getParentMatchCount(mutationParents);

@@ -1,6 +1,7 @@
 package mcskware.allcrop;
 
 import mcskware.allcrop.recipes.AllCropRecipes;
+import mcskware.allcrop.spreading.CropSpreading;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -15,9 +16,13 @@ public class AllCropMod {
     private static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "allcropmod";
 
+    // event handling classes
+    CropSpreading cropSpreading = new CropSpreading();
+
     public AllCropMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(cropSpreading);
         ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, AllCropModConfig.spec);
     }
 
