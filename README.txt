@@ -1,3 +1,38 @@
+----------------------------
+AllCrop Goals and Philosophy
+----------------------------
+This mod intends to provide ways of obtaining every possible crop given only saplings as a starting resource.
+While intended for skyblock and survival island environments, it's possible it may find other uses as well.
+
+New crops are obtainable by "cross-cropping" previously attained crops. To start, putting saplings on either side
+of a block of dirt, and bone-mealing the saplings, will eventually turn the dirt block into a grass block. This
+grass can then be bone-mealed, and wheat seeds will be obtained. By cross-cropping wheat with saplings and wheat
+with grass, you can obtain further crop types.
+
+The crops that are obtainable by default are:
+* all variety of saplings from oak saplings
+* grass block
+* wheat
+* carrots
+* potatoes
+* beetroot
+* pumpkin
+* melon
+* mycelium
+* brown mushroom
+* red mushroom
+* cactus
+* sugar cane
+* kelp
+* cocoa beans
+* soul sand
+* nether wart
+* snow layers
+* chorus plant
+
+I'm debating adding a toggle in the configuration that allows mob drops to be mutated as well, to both assist
+packs where getting passive mobs is difficult, where the nether is difficult, or peaceful mode.
+
 -------------------------------------------
 Source installation information for modders
 -------------------------------------------
