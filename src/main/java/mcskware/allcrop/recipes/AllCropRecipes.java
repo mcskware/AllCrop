@@ -17,6 +17,7 @@ public class AllCropRecipes {
         mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.POTATOES), PlacementPredicates.isSandyBlock(), Blocks.SUGAR_CANE));
         mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.WHEAT, Blocks.CARROTS), PlacementPredicates.isSandyBlock(), Blocks.CACTUS));
         mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.CARROTS, Blocks.POTATOES), PlacementPredicates.isFertileSoil(), Blocks.PUMPKIN_STEM));
+        mutationRecipes.add(new MutationRecipe(Lists.newArrayList(Blocks.OAK_SAPLING, Blocks.OAK_SAPLING), PlacementPredicates.isDirtlikeBlock(), Blocks.GRASS_BLOCK));
     }
 
     public static Set<MutationRecipe> getMatchingRecipes(Collection<Block> testParents, BlockState testSoil) {

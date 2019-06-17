@@ -91,7 +91,18 @@ public class CropSpreading {
             MutationRecipe mutant = chooseMutation(possibleMutants, mutationParents);
             if (mutant == null) { continue; }
             Block child = mutant.getChild();
-            if (!world.getBlockState(testPos.down()).canSustainPlant(world, testPos.down(), Direction.UP, (IPlantable)child)) { continue; }
+            if (child instanceof IPlantable) {
+                // for plantable things, make sure the target location can support this plant type
+                // note that this is a different kind of check than the placement predicate, and
+                // will test for things like sugar cane needing nearby water, for example
+                if (!world.getBlockState(testPos.down()).canSustainPlant(world, testPos.down(), Direction.UP, (IPlantable) child)) {
+                    continue;
+                }
+            } else {
+                // for non-plantable things, we are probably trying to mutate dirt to grass or something like that,
+                // directly affecting the block between the parents
+                testPos = testPos.down();
+            }
 
             world.setBlockState(testPos, child.getDefaultState(), 3);
             mutated = true;

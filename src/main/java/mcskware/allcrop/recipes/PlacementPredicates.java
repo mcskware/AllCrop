@@ -26,4 +26,13 @@ class PlacementPredicates {
             return true;
         });
     }
+
+    @SuppressWarnings("RedundantIfStatement")
+    static Predicate<BlockState> isDirtlikeBlock() {
+        return ((state) -> {
+            Block block = state.getBlock();
+            if (!(block == Blocks.DIRT)) { return false; }
+            return true;
+        });
+    }
 }
