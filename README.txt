@@ -34,6 +34,19 @@ I'm debating adding a toggle in the configuration that allows mob drops to be mu
 packs where getting passive mobs is difficult, where the nether is difficult, or peaceful mode.
 
 -------------------------------------------
+Notes for getting Forge running in IntelliJ
+-------------------------------------------
+Here are some basic instructions that should hopefully get you building and running modded Minecraft for 1.14:
+1) clone this repo locally with 'git clone https://github.com/mcskware/AllCrop.git'
+2) open the containing directory in IntelliJ
+3) refresh Gradle (the little double arrow circle icon when you expand Gradle from the right hand pane)
+4) run "genIntellijRuns" from the Gradle task subdirectory AllCrop->Tasks->fg_runs (double click it)
+5) do a Ctrl-F9 build
+6) run "runClient" from the same Gradle subdirectory (double click it)
+7) play modded Minecraft!
+8) at this point you should be able to do a normal Shift-F9 to run
+
+-------------------------------------------
 Source installation information for modders
 -------------------------------------------
 This code follows the Minecraft Forge installation methodology. It will apply
