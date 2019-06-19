@@ -59,6 +59,7 @@ public class CropSpreading {
         List<BlockPos> blocks = getNeighborPositions(pos.down());
         Collections.shuffle(blocks);
 
+        boolean spread = false;
         for (BlockPos testPos : blocks) {
             BlockState testState = world.getBlockState(testPos);
             boolean isFertile = testState.isFertile(world, testPos);
@@ -68,8 +69,14 @@ public class CropSpreading {
 
             if (isAirBlock && isFertile && canSustainPlant) {
                 world.setBlockState(plantPos, block.getDefaultState(), 3);
+                spread = true;
                 break;
             }
+        }
+
+        // if we fail to spread, default to vanilla behavior
+        if (!spread) {
+            event.setResult(Event.Result.DEFAULT);
         }
     }
 
