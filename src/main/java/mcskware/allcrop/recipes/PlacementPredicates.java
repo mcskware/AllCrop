@@ -35,4 +35,13 @@ class PlacementPredicates {
             return true;
         });
     }
+
+    @SuppressWarnings({"RedundantIfStatement", "SameParameterValue"})
+    static Predicate<BlockState> isSpecificBlock(Block block) {
+        return ((state) -> {
+           Block b = state.getBlock();
+           if (b != block) { return false; }
+           return true;
+        });
+    }
 }

@@ -38,9 +38,12 @@ public class CropSpreading {
 
         event.setResult(Event.Result.ALLOW);
 
+        // did this bone meal event result in a spread?
         if (world.getRandom().nextInt(100) >= AllCropModConfig.GENERAL.CropSpreadChance.get()) { return; }
 
+        // did this bone meal event result in a mutation?
         if (world.getRandom().nextInt(100) < AllCropModConfig.GENERAL.CropMutateChance.get()) {
+            // NB: if mutation fails, we will fall back to a normal spread event
             boneMealMutate(event);
         } else {
             boneMealSpread(event);
@@ -84,6 +87,7 @@ public class CropSpreading {
 
             List<Block> mutationParents = getMutationParents(world, testPos);
             Set<MutationRecipe> possibleMutants = AllCropRecipes.getMatchingRecipes(mutationParents, world.getBlockState(testPos.down()));
+            // here we remove all mutations that don't involve the specific parent that was bone mealed
             possibleMutants.removeIf(mutationRecipe -> !mutationRecipe.hasParent(world.getBlockState(pos).getBlock()));
 
             if (possibleMutants.isEmpty()) { continue; }
@@ -119,6 +123,7 @@ public class CropSpreading {
             Block block = state.getBlock();
             if (block instanceof CropsBlock) {
                 CropsBlock crops = (CropsBlock)block;
+                // we only allow fully mature parents to contribute to mutations
                 if (!crops.isMaxAge(state)) { continue; }
             }
             parents.add(world.getBlockState(npos).getBlock());
@@ -127,6 +132,9 @@ public class CropSpreading {
     }
 
     private List<BlockPos> getNeighborPositions(BlockPos pos) {
+        // NB: There's a bug in the new mutable getAllInBox variant, I wasn't able to get
+        // the correct collection of blocks using that method. It just returned multiple
+        // copies of one of the corners of the box. The way below is readable enough tho.
         List<BlockPos> neighbors = Lists.newArrayList();
         neighbors.add(pos.north().west());
         neighbors.add(pos.north());
@@ -139,6 +147,7 @@ public class CropSpreading {
         return neighbors;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     private boolean canSpread(BlockState state, IWorld world, BlockPos pos) {
         if (state.getBlock() instanceof CropsBlock) {
             CropsBlock crops = (CropsBlock) state.getBlock();
@@ -157,8 +166,6 @@ public class CropSpreading {
         if (state.getBlock() instanceof SandBlock) {
             return true;
         }
-
-        LOGGER.debug("Will not spread");
 
         return false;
     }
